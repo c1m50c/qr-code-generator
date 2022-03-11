@@ -15,18 +15,15 @@ fn main() {
         .filter(|s| s.find('-') == Some(0))
         .collect();
     
-    // Retrieve Version Flags.
-    let version: Vec<String> = flags.iter()
-        .filter(|&s| s.find('-') == Some(0) && s.find('v') == Some(1))
-        .map(|s| s.clone())
-        .collect();
-    
-    // Isolate a singular Version Flag and convert it into a `u32`.
-    let version = version.get(0)
-        .unwrap_or(&String::from("1"))
+    // Retrieve Version Flags, then isolate the first one into a `u32`.
+    let version = flags.iter()
+        .filter(|&s| s.find('v') == Some(1)) // Find "-v" flags.
+        .map(|s| s.clone()) // Make Strings owned.
+        .collect::<Vec<String>>().get(0) // Collect all version flags into a Vec, then grab the first item.
+        .unwrap_or(&String::from("1")) // Retrieve the Some value or "1".
         .trim_start_matches("-v").to_string() // Remove the "-v" prefix of the flag.
         .parse::<u32>()
-        .expect("Cannot parse the version flag into a unsigned integer.");
+        .expect("Cannot parse the version flag into an unsigned integer.");
     
     assert!(version >= 1 && version <= 40, "Invalid Version.");
     
