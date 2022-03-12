@@ -1,5 +1,6 @@
 use std::vec::Vec;
-mod encode;
+pub mod render;
+pub mod encode;
 
 
 fn main() {
@@ -35,7 +36,7 @@ fn main() {
         println!("Version: {:?}", version);
     }
 
-    let qr_code = encode::generate(message, version);
+    let qr_code = render::as_image(message.as_bytes(), version);
     qr_code.save(output_path.clone())
         .expect(format!("Failed to save QR Code to {:?}", output_path).as_str());
 }

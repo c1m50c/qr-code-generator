@@ -1,13 +1,14 @@
-use image::{GrayImage, Luma};
+pub mod types;
+
+use types::QRData;
 
 
-fn create_positional_indicators(img: &mut GrayImage) {
-    let (width, height) = img.dimensions();
+/// Creates the positional anchors you see at the top right, left, and bottom right of a `QRCode`.
+fn create_positional_anchors(data: &mut QRData) {
+    let (width, height) = data.dimensions();
 
-    // Places a white pixel at the specified location.
-    let mut place = |x: u32, y: u32| {
-        img.put_pixel(x, y, Luma([ 255 ]));
-    };
+    // Places a light [`QRBit`] at the specified location.
+    let mut place = |x: u32, y: u32| { data.place_light(x, y); };
 
     // Top Left Indicator
     for i in 1 .. 6 { place(i, 1); } for i in 2 .. 6 { place(1, i); }
@@ -26,11 +27,9 @@ fn create_positional_indicators(img: &mut GrayImage) {
 }
 
 
-pub fn generate(message: String, version: u32) -> GrayImage {
-    let size: u32 = 21 + (4 * (version - 1));
+pub fn generate(message: &[u8], version: u32) -> QRData {
+    let mut qr_data = QRData::new(version);
+    create_positional_anchors(&mut qr_data);
 
-    let mut image = GrayImage::new(size, size);
-    create_positional_indicators(&mut image);
-
-    return image;
+    return qr_data;
 }
