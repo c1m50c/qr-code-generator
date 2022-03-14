@@ -23,6 +23,18 @@ impl QRData {
     const fn position_as_idx(x: u32, y: u32, max_y: u32) -> usize {
         return (y + (x * max_y)) as usize;
     }
+
+    /// Returns a [`bool`] determining if a position is out of bounds.
+    #[inline]
+    fn is_out_of_bounds(&self, x: u32, y: u32) -> bool {
+        return Self::position_as_idx(x, y, self.dimensions().1) >= self.data.len();
+    }
+
+    /// Returns a [`bool`] determining if a position is within bounds.
+    #[inline]
+    fn is_in_bounds(&self, x: u32, y: u32) -> bool {
+        return Self::position_as_idx(x, y, self.dimensions().1) < self.data.len();
+    }
 }
 
 
@@ -84,7 +96,7 @@ impl QRData {
     /// assert_eq!(qr_data.version(), 3);
     /// ```
     #[inline]
-    pub fn version(&self) -> u32 {
+    pub const fn version(&self) -> u32 {
         return self.version;
     }
 
@@ -96,7 +108,7 @@ impl QRData {
     /// assert_eq!(qr_data.dimensions(), (29, 29));
     /// ```
     #[inline]
-    pub fn dimensions(&self) -> (u32, u32) {
+    pub const fn dimensions(&self) -> (u32, u32) {
         return self.dimensions;
     }
 

@@ -11,19 +11,28 @@ fn create_positional_anchors(data: &mut QRData) {
     let mut place = |x: u32, y: u32| { data.place_light(x, y); };
 
     // Top Left Indicator
-    for i in 1 .. 6 { place(i, 1); } for i in 2 .. 6 { place(1, i); }
-    for i in 1 .. 6 { place(i, 5); } for i in 2 .. 6 { place(5, i); }
-    for i in 0 .. 8 { place(i, 7); } for i in 0 .. 7 { place(7, i); }
+    (1 .. 6).for_each(|i| place(i, 1));
+    (1 .. 6).for_each(|i| place(i, 5));
+    (0 .. 8).for_each(|i| place(i, 7));
+    (2 .. 6).for_each(|i| place(1, i));
+    (2 .. 6).for_each(|i| place(5, i));
+    (0 .. 7).for_each(|i| place(7, i));
 
     // Top Right Indicator
-    for i in width - 6 .. width - 1 { place(i, 1); } for i in 2 .. 6 { place(width - 6, i); }
-    for i in width - 6 .. width - 1 { place(i, 5); } for i in 2 .. 6 { place(width - 2, i); }
-    for i in width - 8 .. width { place(i, 7); } for i in 0 .. 8 { place(width - 8, i); }
+    (width - 6 .. width - 1).for_each(|i| place(i, 1));
+    (width - 6 .. width - 1).for_each(|i | place(i, 5));
+    (width - 8 .. width).for_each(|i| place(i, 7));
+    (2 .. 6).for_each(|i| place(width - 6, i));
+    (2 .. 6).for_each(|i| place(width - 2, i));
+    (0 .. 8).for_each(|i| place(width - 8, i));
 
     // Bottom Left Indicator
-    for i in 1 .. 6 { place(i, height - 2); } for i in height - 6 .. height - 2 { place(1, i); }
-    for i in 1 .. 6 { place(i, height - 6); } for i in height - 6 .. height - 2 { place(5, i); }
-    for i in 0 .. 8 { place(i, height - 8); } for i in height - 7  .. height { place(7, i); }
+    (1 .. 6).for_each(|i| place(i, height - 2));
+    (1 .. 6).for_each(|i| place(i, height - 6));
+    (0 .. 8).for_each(|i| place(i, height - 8));
+    (height - 6 .. height - 2).for_each(|i| place(1, i));
+    (height - 6 .. height - 2).for_each(|i| place(5, i));
+    (height - 7  .. height).for_each(|i| place(7, i));
 }
 
 
