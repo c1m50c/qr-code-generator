@@ -36,19 +36,17 @@ fn get_flags(args: Vec<String>) -> HashMap<String, String> {
         return map;
     }
 
-    // TODO: This section could use some cleanup
-
-    let mut flags = args.iter()
+    // Filter out all the Strings with the '-' character at the beginning, which classifies as a flag.
+    let flags = args.iter()
         .filter(|&s| s.chars().nth(0).unwrap_or(' ') == '-').cloned()
         .collect::<Vec<_>>();
     
+    // Split the arguments into slices around the pattern that filtered the flags.
     let split_parameters = args.split(|s| s.chars().nth(0).unwrap_or(' ') == '-')
-        .skip(1)
-        .collect::<Vec<_>>();
+        .skip(1).collect::<Vec<_>>();
     
-
+    // Create concatenated Strings from the slices in `split_parameters`.
     let mut parameters = Vec::with_capacity(flags.len());
-
     split_parameters.iter().for_each(|&slice| {
         let mut new_parameter = String::new();
         
@@ -61,9 +59,10 @@ fn get_flags(args: Vec<String>) -> HashMap<String, String> {
 
     assert_eq!(flags.len(), parameters.len(), "Error in get_flag(), non-equal amount of flags compared to parameters.");
 
-    while let (Some(flag), Some(parameter)) = (flags.pop(), parameters.pop()) {
-        map.insert(flag, parameter);
-    }
+    // Insert the flags and coresponding parameters into the returned map.
+    flags.iter().zip(parameters.iter()).for_each(|(flag, parameter)| {
+        map.insert(flag.clone(), parameter.clone());
+    });
 
     return map;
 }
