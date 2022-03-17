@@ -1,5 +1,7 @@
+pub use ecl::ErrorCorrectionLevel;
 pub use code::QRCode;
 pub mod code;
+pub mod ecl;
 
 
 /// Enums representing a Pixel's state within a `QRCode`.

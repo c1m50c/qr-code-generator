@@ -1,6 +1,6 @@
+use super::{QRBit, ErrorCorrectionLevel};
 use std::ops::{Index, IndexMut};
 use std::vec::Vec;
-use super::QRBit;
 
 
 /// Data representation of the final state during encoding,
@@ -11,6 +11,9 @@ pub struct QRCode {
 
     /// Coresponds to the `version` field, size of the [`QRCode`] in pixels.
     dimensions: (u32, u32),
+
+    /// Level of data bytes than can be restored if the code is damaged.
+    ecl: ErrorCorrectionLevel,
 
     /// Represents the `pixels` within the [`QRCode`],
     /// can be directly accessed through square-bracket notation on the [`QRCode`] with a position.
@@ -59,6 +62,7 @@ impl QRCode {
         return Self {
             version,
             dimensions,
+            ecl: ErrorCorrectionLevel::Medium,
             pixels,
         }
     }

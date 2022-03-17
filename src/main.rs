@@ -69,8 +69,7 @@ fn get_flags(args: Vec<String>) -> HashMap<String, String> {
 
 
 fn main() {
-    let env_args = std::env::args().skip(1)
-        .collect::<Vec<_>>();
+    let env_args = std::env::args().skip(1).collect::<Vec<_>>();
     
     assert!(env_args.len() != 0, "Application requires atleast one argument.");
     
