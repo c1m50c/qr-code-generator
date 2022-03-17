@@ -1,14 +1,13 @@
+pub use types::*;
 pub mod types;
 
-use types::QRData;
 
-
-/// Creates the positional anchors you see at the top right, left, and bottom right of a `QRCode`.
-fn create_positional_anchors(data: &mut QRData) {
-    let (width, height) = data.dimensions();
+/// Creates the positional anchors you see at the top right, left, and bottom right of a [`QRCode`].
+fn create_positional_anchors(code: &mut QRCode) {
+    let (width, height) = code.dimensions();
 
     // Places a light [`QRBit`] at the specified location.
-    let mut place = |x: u32, y: u32| { data.place_light(x, y); };
+    let mut place = |x: u32, y: u32| { code.place_light(x, y); };
 
     // Top Left Indicator
     (1 .. 6).for_each(|i| place(i, 1));
@@ -36,9 +35,10 @@ fn create_positional_anchors(data: &mut QRData) {
 }
 
 
-pub fn generate(message: &[u8], version: u32) -> QRData {
-    let mut qr_data = QRData::new(version);
-    create_positional_anchors(&mut qr_data);
+/// Generates a [`QRCode`] encoded with the `message` and the provided size of the `version`.
+pub fn generate(message: &[u8], version: u32) -> QRCode {
+    let mut qr_code = QRCode::new(version);
+    create_positional_anchors(&mut qr_code);
 
-    return qr_data;
+    return qr_code;
 }

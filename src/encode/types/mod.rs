@@ -1,5 +1,5 @@
-pub use qr_data::QRData;
-pub mod qr_data;
+pub use code::QRCode;
+pub mod code;
 
 
 /// Enums representing a Pixel's state within a `QRCode`.

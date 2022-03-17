@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 use std::vec::Vec;
 
-pub mod render;
 pub mod encode;
+pub mod render;
 
 
 /// Retrieves the flags and their parameters from the environment's arguments, storing them in a [`HashMap`].
@@ -78,7 +78,7 @@ fn main() {
 
     let mut message: String = String::new();
     let mut output: String = String::from("./output-qrcode.bmp");
-    let mut version: String = String::from("5");
+    let mut version: String = String::from("1");
 
     if cfg!(debug_assertions) {
         println!("Args: {:?}", env_args);
@@ -108,8 +108,8 @@ fn main() {
 
     let version = version.parse::<u32>()
         .expect(format!("Cannot parse {:?} into a 32-bit unsigned integer.", version).as_str());
-    
-    let qr_code = render::as_image(message.as_bytes(), version);
-    qr_code.save(output.clone())
-        .expect(format!("Failed to save QRCode to path {:?}.", output).as_str());
+
+    let qr_code = encode::generate(message.as_bytes(), version);
+    render::generate_image(qr_code).save(output.clone())
+        .expect(format!("Failed to save Image to path {:?}.", output).as_str());
 }
